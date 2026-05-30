@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Highr</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #080E1F;
+  --surface: #0E1628;
+  --surface2: #131D32;
+  --blue: #3B82F6;
+  --blue-mid: #2563EB;
+  --blue-pale: #93C5FD;
+  --blue-dim: rgba(59,130,246,0.1);
+  --white: #EFF6FF;
+  --muted: rgba(147,197,253,0.4);
+  --border: rgba(59,130,246,0.1);
+  --border-soft: rgba(255,255,255,0.06);
+  --radius: 12px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.25rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(8,14,31,0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.logo {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  text-decoration: none;
+}
+.logo i { font-style: italic; color: var(--blue-pale); }
+
+.nav-r { display: flex; align-items: center; gap: 2.5rem; }
+.nav-link { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color .2s; letter-spacing: 0.02em; }
+.nav-link:hover { color: var(--white); }
+.nav-cta {
+  font-size: 0.8rem; font-weight: 500;
+  color: var(--bg); background: var(--blue-pale);
+  border: none; padding: .6rem 1.4rem; border-radius: 6px;
+  cursor: pointer; letter-spacing: 0.02em;
+  transition: background .2s, transform .1s; text-decoration: none;
+}
+.nav-cta:hover { background: var(--white); }
+.nav-cta:active { transform: scale(0.98); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  padding: 8rem 3rem 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 80%, rgba(37,99,235,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-top {
+  width: 100%; max-width: 820px;
+  margin-bottom: 4rem;
+  position: relative; z-index: 2;
+}
+
+.hero-rule {
+  display: flex; align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.rule-line { flex: 1; height: 1px; background: var(--border-soft); }
+.rule-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(3.8rem, 7.5vw, 7.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin-bottom: 2rem;
+}
+h1 i { font-style: italic; color: var(--blue-pale); }
+
+.hero-desc {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 540px;
+  font-weight: 300;
+}
+.hero-desc strong { color: rgba(147,197,253,0.85); font-weight: 400; }
+
+/* ── APP SCREENSHOT FRAME ── */
+.app-frame {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 820px;
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(59,130,246,0.05),
+    0 30px 70px rgba(0,0,0,0.6),
+    0 0 100px rgba(37,99,235,0.04);
+}
+
+.app-titlebar {
+  background: #0A1020;
+  padding: 0.85rem 1.25rem;
+  display: flex; align-items: center; gap: 0.5rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+.tb-dot { width: 10px; height: 10px; border-radius: 50%; opacity: 0.85; }
+.tb-dot:nth-child(1) { background: #FF5F57; }
+.tb-dot:nth-child(2) { background: #FFBD2E; }
+.tb-dot:nth-child(3) { background: #28CA41; }
+.tb-url {
+  flex: 1; text-align: center; margin-right: 40px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem; color: rgba(255,255,255,0.25);
+  letter-spacing: 0.04em;
+}
+
+.app-body {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.app-header-row {
+  grid-column: span 2;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 0.5rem;
+}
+.app-greet {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.65rem;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+.app-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+/* nudge bubble */
+.app-nudge {
+  grid-column: span 2;
+  background: var(--surface2);
+  border: 1px solid rgba(59,130,246,0.18);
+  border-left: 3px solid var(--blue);
+  border-radius: 10px;
+  padding: 1.25rem;
+  position: relative;
+}
+.nudge-from {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue-pale);
+  margin-bottom: 0.6rem;
+  opacity: 0.7;
+}
+.nudge-msg {
+  font-size: 0.9rem;
+  color: rgba(239,246,255,0.85);
+  line-height: 1.6;
+}
+.nudge-msg strong { color: var(--blue-pale); font-weight: 500; }
+.nudge-actions { display: flex; gap: 0.6rem; margin-top: 1rem; }
+
+.na-primary {
+  background: var(--blue); color: var(--white);
+  border: none; padding: .5rem 1.15rem; border-radius: 5px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 500;
+  cursor: pointer; transition: background .2s;
+}
+.na-primary:hover { background: var(--blue-mid); }
+
+.na-secondary {
+  background: rgba(255,255,255,0.02); color: var(--muted);
+  border: 1px solid var(--border-soft); padding: .5rem 1.15rem; border-radius: 5px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.78rem;
+  cursor: pointer; transition: color .2s, border-color .2s, background .2s;
+}
+.na-secondary:hover { color: var(--white); border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); }
+
+/* Dynamic Explainer Drawer Inside Dashboard Mockup */
+.nudge-explainer {
+  display: none;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--blue-pale);
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* goal cards */
+.goal-card {
+  background: var(--surface2);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem;
+}
+.gc-emoji { font-size: 1.2rem; margin-bottom: 0.5rem; display: block; }
+.gc-name { font-size: 0.8rem; font-weight: 500; color: var(--white); margin-bottom: 0.3rem; }
+.gc-target { font-size: 0.68rem; color: var(--muted); margin-bottom: 0.75rem; font-family: 'DM Mono', monospace; }
+.gc-track { background: rgba(255,255,255,0.06); border-radius: 4px; height: 4px; overflow: hidden; margin-bottom: 0.4rem; }
+.gc-fill { height: 100%; border-radius: 4px; background: var(--blue); }
+.gc-pct { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--blue-pale); }
+
+/* portfolio row */
+.app-portfolio {
+  grid-column: span 2;
+  background: var(--surface2);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 1.25rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.port-left { display: flex; flex-direction: column; gap: 0.25rem; }
+.port-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.port-val { font-family: 'Instrument Serif', serif; font-size: 2rem; letter-spacing: -0.02em; color: var(--white); line-height: 1; }
+.port-change { font-size: 0.75rem; color: #4ADE80; font-weight: 500; }
+.port-instruments { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.pi-tag {
+  background: var(--blue-dim);
+  border: 1px solid rgba(59,130,246,0.15);
+  color: var(--blue-pale);
+  font-size: 0.68rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 4px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+/* ── BELOW HERO ── */
+.below {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 7rem 2rem;
+}
+
+.section-rule {
+  display: flex; align-items: center; gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+.section-rule .rule-line { flex: 1; height: 1px; background: var(--border-soft); }
+.section-rule span {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.below-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border-soft);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.bg-cell {
+  background: var(--bg);
+  padding: 2.5rem 2rem;
+  transition: background 0.3s;
+}
+.bg-cell:hover { background: rgba(255,255,255,0.01); }
+
+.bgc-index {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--blue-pale);
+  margin-bottom: 1.25rem;
+  opacity: 0.7;
+}
+
+.bgc-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+.bgc-title i { font-style: italic; color: var(--blue-pale); }
+
+.bgc-body {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ── INSTRUMENTS ── */
+.inst-section {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 2rem 7rem;
+}
+
+/* Fluid wrap container to avoid ugly double borders */
+.table-wrap {
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.inst-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.inst-table th {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 1rem 1.5rem;
+  text-align: left;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-soft);
+  font-weight: 400;
+}
+
+.inst-table td {
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 0.85rem;
+  color: rgba(239,246,255,0.75);
+  background: var(--bg);
+  transition: background 0.2s;
+}
+.inst-table tr:last-child td { border-bottom: none; }
+.inst-table tr:hover td { background: var(--surface); }
+
+.inst-name-cell { color: var(--white) !important; font-weight: 500; }
+.inst-rate-cell {
+  font-family: 'DM Mono', monospace;
+  color: #4ADE80 !important;
+  font-size: 0.8rem !important;
+}
+.inst-note-cell { font-weight: 300; color: var(--muted); }
+
+.no-stocks-row td {
+  background: rgba(239,68,68,0.02) !important;
+  color: rgba(239,246,255,0.35) !important;
+  font-style: italic;
+}
+.no-stocks-row:hover td { background: rgba(239,68,68,0.04) !important; }
+
+/* ── CTA ── */
+.cta {
+  border-top: 1px solid var(--border-soft);
+  padding: 9rem 2rem;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+
+.cta::before {
+  content: '';
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 250px;
+  background: radial-gradient(ellipse at bottom, rgba(37,99,235,0.06), transparent 70%);
+  pointer-events: none;
+}
+
+.cta-rule {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1.5rem; margin-bottom: 3.5rem;
+}
+.cta-rule .rule-line { width: 60px; height: 1px; background: var(--border-soft); }
+.cta-rule span {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+.cta h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(3.2rem, 6.5vw, 6.5rem);
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+  position: relative; z-index: 1;
+}
+.cta h2 i { font-style: italic; color: var(--blue-pale); }
+
+.cta p {
+  font-size: 0.95rem; color: var(--muted);
+  margin-bottom: 3rem; font-weight: 300;
+  position: relative; z-index: 1;
+}
+
+.cta-form {
+  display: flex; gap: 0.5rem; justify-content: center;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  padding: 0.45rem;
+  max-width: 440px;
+  margin: 0 auto;
+  position: relative; z-index: 1;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.cta-form:focus-within {
+  border-color: rgba(59,130,246,0.4);
+  box-shadow: 0 0 20px rgba(37,99,235,0.15);
+}
+.cta-input {
+  flex: 1; background: transparent; border: none;
+  padding: .7rem 1rem;
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+  color: var(--white); outline: none;
+}
+.cta-input::placeholder { color: rgba(147,197,253,0.25); }
+.cta-btn {
+  background: var(--blue); color: var(--white);
+  border: none; padding: .7rem 1.6rem; border-radius: 5px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 500;
+  cursor: pointer; white-space: nowrap;
+  transition: background .2s, transform .1s;
+}
+.cta-btn:hover { background: var(--blue-mid); }
+.cta-btn:active { transform: scale(0.98); }
+.cta-ok { display: none; color: var(--blue-pale); font-size: 0.9rem; margin-top: 1.5rem; position: relative; z-index: 1; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border-soft);
+  padding: 2rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: #050A17;
+}
+.foot-logo { font-family: 'Instrument Serif', serif; font-size: 1.25rem; color: var(--white); text-decoration: none; }
+.foot-logo i { font-style: italic; color: var(--blue-pale); }
+footer p { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.06em; }
+
+/* REVEAL ON SCROLL ENGINE */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .8s cubic-bezier(0.16, 1, 0.3, 1), transform .8s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal.on { opacity: 1; transform: none; }
+.d1{transition-delay:.05s}.d2{transition-delay:.12s}.d3{transition-delay:.2s}
+
+@media(max-width:760px){
+  nav { padding: 1rem 1.5rem; }
+  .nav-r { gap: 1.5rem; }
+  .nav-link { display: none; }
+  .hero { padding: 7rem 1.5rem 4rem; }
+  .app-body { grid-template-columns: 1fr; padding: 1.25rem; }
+  .app-header-row,.app-nudge,.app-portfolio { grid-column: span 1; }
+  .app-header-row { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+  .app-portfolio { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .below, .inst-section { padding: 4rem 1.5rem; }
+  .below-grid { grid-template-columns: 1fr; }
+  .cta { padding: 6rem 1.5rem; }
+  footer { flex-direction: column; gap: .75rem; text-align: center; padding: 2rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">h<i>i</i>ghr</a>
+  <div class="nav-r">
+    <a href="#below" class="nav-link">product</a>
+    <a href="#cta" class="nav-cta">early access</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-rule">
+      <div class="rule-line"></div>
+      <span class="rule-text">India &nbsp;·&nbsp; 2025 &nbsp;·&nbsp; Personal finance</span>
+      <div class="rule-line"></div>
+    </div>
+    <h1>Your money<br>should be<br><i>working.</i></h1>
+    <p class="hero-desc">
+      Highr tracks your spending, finds idle cash, and tells you exactly where to invest it — in <strong>SIPs, liquid funds, and bonds</strong> — tied to goals, explained plainly.
+    </p>
+  </div>
+
+  <div class="app-frame reveal">
+    <div class="app-titlebar">
+      <div class="tb-dot"></div>
+      <div class="tb-dot"></div>
+      <div class="tb-dot"></div>
+      <div class="tb-url">highr.app · dashboard</div>
+    </div>
+    <div class="app-body">
+      <div class="app-header-row">
+        <div class="app-greet">Good evening, Priya.</div>
+        <div class="app-date">FRI 30 MAY 2025</div>
+      </div>
+
+      <div class="app-nudge">
+        <div class="nudge-from">Highr · just now</div>
+        <div class="nudge-msg">
+          You have <strong>₹2,400 idle</strong> this week. Putting <strong>₹1,600</strong> into a liquid fund and <strong>₹800</strong> into your index SIP gets your Goa trip to June 2nd — <strong>3 weeks earlier</strong> than your current pace.
+        </div>
+        <div class="nudge-actions">
+          <button class="na-primary" onclick="alert('Action logged! This simulation connects seamlessly to secure production APIs.')">Invest now</button>
+          <button class="na-secondary" id="explain-btn" onclick="toggleExplainer()">Explain this</button>
+        </div>
+        <div class="nudge-explainer" id="explainer-drawer">
+          &gt;_ ANALYSIS:<br>
+          - Liquid Fund Allocation: ₹1,600 acts as a yield buffer matching current short term liquidity trends (~7% annualized). Easily reachable for prompt liquidations.<br>
+          - Index SIP Addition: ₹800 exploits compounded returns matching historical ~12% timelines.<br>
+          - Net Outcome: Accelerated target trajectory saves precisely 21 dynamic tracking days.
+        </div>
+      </div>
+
+      <div class="goal-card">
+        <span class="gc-emoji">🏖️</span>
+        <div class="gc-name">Goa trip</div>
+        <div class="gc-target">₹18,400 / ₹27,000</div>
+        <div class="gc-track"><div class="gc-fill" style="width:68%"></div></div>
+        <div class="gc-pct">68%</div>
+      </div>
+
+      <div class="goal-card">
+        <span class="gc-emoji">🛡️</span>
+        <div class="gc-name">Emergency fund</div>
+        <div class="gc-target">₹42,000 / ₹1,00,000</div>
+        <div class="gc-track"><div class="gc-fill" style="width:42%"></div></div>
+        <div class="gc-pct">42%</div>
+      </div>
+
+      <div class="app-portfolio">
+        <div class="port-left">
+          <div class="port-label">Total invested</div>
+          <div class="port-val">₹68,400</div>
+          <div class="port-change">↑ 11.4% this year</div>
+        </div>
+        <div class="port-instruments">
+          <span class="pi-tag">Liquid</span>
+          <span class="pi-tag">Index SIP</span>
+          <span class="pi-tag">RBI Bond</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="below reveal" id="below">
+  <div class="section-rule">
+    <div class="rule-line"></div>
+    <span>What Highr does differently</span>
+    <div class="rule-line"></div>
+  </div>
+
+  <div class="below-grid">
+    <div class="bg-cell d1">
+      <div class="bgc-index">01</div>
+      <div class="bgc-title">Goal-first,<br><i>always.</i></div>
+      <p class="bgc-body">Tell Highr what you're saving for and by when. Every recommendation flows from that — not from generic financial advice.</p>
+    </div>
+    <div class="bg-cell d2">
+      <div class="bgc-index">02</div>
+      <div class="bgc-title">We explain<br><i>everything.</i></div>
+      <p class="bgc-body">Every nudge comes with a plain reason. Tap "explain this" and get a clear answer — why this instrument, why now, why it fits your goal.</p>
+    </div>
+    <div class="bg-cell d3">
+      <div class="bgc-index">03</div>
+      <div class="bgc-title">No stocks.<br><i>By design.</i></div>
+      <p class="bgc-body">AI recommending individual stocks to a million users creates herding risk. We only work where AI is genuinely responsible.</p>
+    </div>
+  </div>
+</div>
+
+<div class="inst-section reveal">
+  <div class="section-rule">
+    <div class="rule-line"></div>
+    <span>Instruments we use</span>
+    <div class="rule-line"></div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="inst-table">
+      <thead>
+        <tr>
+          <th>Instrument</th>
+          <th>Avg. return</th>
+          <th>Liquidity</th>
+          <th>Best for</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="inst-name-cell">Liquid Funds</td>
+          <td class="inst-rate-cell">~7%</td>
+          <td class="inst-note-cell">1 business day</td>
+          <td class="inst-note-cell">Short-term goals, idle cash</td>
+        </tr>
+        <tr>
+          <td class="inst-name-cell">Index SIPs</td>
+          <td class="inst-rate-cell">~12%</td>
+          <td class="inst-note-cell">3–5 days</td>
+          <td class="inst-note-cell">Long-term wealth building</td>
+        </tr>
+        <tr>
+          <td class="inst-name-cell">RBI Floating Bonds</td>
+          <td class="inst-rate-cell">8.05%</td>
+          <td class="inst-note-cell">7-year lock-in</td>
+          <td class="inst-note-cell">Risk-free, long horizon</td>
+        </tr>
+        <tr>
+          <td class="inst-name-cell">Debt Funds</td>
+          <td class="inst-rate-cell">~9%</td>
+          <td class="inst-note-cell">2–3 days</td>
+          <td class="inst-note-cell">3-year+ goals, stable returns</td>
+        </tr>
+        <tr>
+          <td class="inst-name-cell">Sovereign Gold Bonds</td>
+          <td class="inst-rate-cell">Gold + 2.5%</td>
+          <td class="inst-note-cell">5–8 years</td>
+          <td class="inst-note-cell">Inflation hedge, long-term</td>
+        </tr>
+        <tr class="no-stocks-row">
+          <td>Individual stocks</td>
+          <td>—</td>
+          <td>—</td>
+          <td>Not offered. AI + stocks = herding risk.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="cta" id="cta">
+  <div class="cta-rule">
+    <div class="rule-line"></div>
+    <span>Early access</span>
+    <div class="rule-line"></div>
+  </div>
+  <h2 class="reveal">Your money<br>should go <i>higher.</i></h2>
+  <p class="reveal">Small launch group. One email when we're ready.</p>
+  <div class="cta-form reveal" id="cta-wl">
+    <input class="cta-input" id="c-email" type="email" placeholder="your@email.com" aria-label="Email address">
+    <button class="cta-btn" onclick="wl('c-email','c-ok','cta-wl')">Join waitlist</button>
+  </div>
+  <div class="cta-ok" id="c-ok">✓ You're on the list.</div>
+</div>
+
+<footer>
+  <a href="#" class="foot-logo">h<i>i</i>ghr</a>
+  <p>Built in India &nbsp;·&nbsp; © 2025</p>
+  <p>Coming soon</p>
+</footer>
+
+<script>
+function toggleExplainer() {
+  const drawer = document.getElementById('explainer-drawer');
+  const btn = document.getElementById('explain-btn');
+  if(drawer.style.display === 'block') {
+    drawer.style.display = 'none';
+    btn.textContent = 'Explain this';
+  } else {
+    drawer.style.display = 'block';
+    btn.textContent = 'Hide explanation';
+  }
+}
+
+function wl(iId, okId, formId) {
+  const inp = document.getElementById(iId);
+  const ok = document.getElementById(okId);
+  const form = document.getElementById(formId);
+  const email = inp.value.trim();
+  if (!email || !email.includes('@')) {
+    inp.style.borderBottom = '1px solid rgba(239,68,68,0.5)';
+    inp.focus();
+    setTimeout(() => inp.style.borderBottom = '', 1500);
+    return;
+  }
+  if (form) form.style.display = 'none';
+  ok.style.display = 'block';
+  try {
+    const l = JSON.parse(localStorage.getItem('highr') || '[]');
+    l.push({ email, ts: new Date().toISOString() });
+    localStorage.setItem('highr', JSON.stringify(l));
+  } catch(e) {}
+}
+
+document.querySelectorAll('input[type=email]').forEach(i => {
+  i.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const b = i.closest('.cta-form')?.querySelector('button');
+      if (b) b.click();
+    }
+  });
+});
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+}, { threshold: 0.05 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
